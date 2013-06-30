@@ -3,7 +3,7 @@
 {% assign next_id = null %}
 {% assign matched = false %}
 {% for post in posts %}
-  {% if post.id == page.id %}
+  {% if post.url == page.url %}
     {% assign matched = true %}
   {% else %}
     {% assign page_categories = page.categories | join: ',' %}
@@ -11,10 +11,10 @@
     {% if post_categories == page_categories %}
       {% if matched %}
         {% if previous_id == null %}
-          {% assign previous_id = post.id %}
+          {% assign previous_id = post.url %}
         {% endif %}
       {% else %}
-        {% assign next_id = post.id %}
+        {% assign next_id = post.url %}
       {% endif %}
     {% endif %}
   {% endif %}

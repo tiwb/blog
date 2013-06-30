@@ -10,10 +10,13 @@
       {% assign category = page.categories | join: ' ' | split: ' ' | last %}
       <ul>
         <li class="{% if category == 'web' %}current{% endif %}">
-        <a href="{{ site.baseurl }}/web">做网页</a>
+        <a href="{{ site.baseurl }}/web">网页</a>
         </li>
         <li class="{% if category == 'linux' %}current{% endif %}">
-        <a href="{{ site.baseurl }}/linux">折腾 Linux</a>
+        <a href="{{ site.baseurl }}/linux">Linux</a>
+        </li>
+        <li class="{% if category == 'blog' %}current{% endif %}">
+        <a href="{{ site.baseurl }}/blog">日志</a>
         </li>
         <li class="{% if category == 'about' %}current{% endif %}">
         <a href="{{ site.baseurl }}/about">关于我</a>

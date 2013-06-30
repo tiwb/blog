@@ -1,13 +1,14 @@
 ---
 layout: default
-title: Tiwb 技术博客
+title: Linux 日志
 categories: linux
 ---
 <section class="docs">
   <div class="grid">
     <article>
     <ul>
-      {% for post in site.categories.linux %}
+      {% assign category = page.categories | join: ' ' | split: ' ' | last %}
+      {% for post in site.categories[category] %}
       <li><span>{{ post.date | date: '%Y-%m-%d' }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a></li>
       {% endfor %}
     </ul>

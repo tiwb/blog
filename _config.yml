@@ -1,5 +1,5 @@
 pygments: true
-permalink: /:categories/:title/
+permalink: /:categories/:year-:month-:day-:title/
 relative_permalinks: false
 markdown: rdiscount
 baidu_tongji_id: 3F3d35307f190110ab5152701a7ffb30f7
