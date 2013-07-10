@@ -9,11 +9,11 @@
     <nav class="main-nav">
       {% assign category = page.categories | join: ' ' | split: ' ' | last %}
       <ul>
-        <li class="{% if category == 'web' %}current{% endif %}">
-        <a href="{{ site.baseurl }}/web">网页</a>
-        </li>
         <li class="{% if category == 'linux' %}current{% endif %}">
         <a href="{{ site.baseurl }}/linux">Linux</a>
+        </li>
+        <li class="{% if category == 'web' %}current{% endif %}">
+        <a href="{{ site.baseurl }}/web">网页</a>
         </li>
         <li class="{% if category == 'blog' %}current{% endif %}">
         <a href="{{ site.baseurl }}/blog">日志</a>
