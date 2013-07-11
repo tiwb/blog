@@ -7,13 +7,13 @@ title: 搭建资料共享服务器
 有了虚拟机环境以后，就可以开始架设各种各样的服务了， 最常用的就是文件共享服务了，我准备把文件共享放到一台服务器上，名字就叫"share"吧，附加一块100G的虚拟盘，之前在配置svn服务器的时候已经介绍过如何附加硬盘了，这里就再说明了。
 
 
-## 用samba做Windows共享
+## 配置Samba匿名共享
 先搭个windows共享，可以放一些软件的安装程序之类的，先做一个简单的samba共享吧。
 
-首先安装samba4
+安装samba：
 
 {% highlight bash %}
-$ yum install samba3
+$ yum install samba
 {% endhighlight %}
 
 让smb服务自动启动：
@@ -22,10 +22,8 @@ $ yum install samba3
 $ chkconfig smb on
 {% endhighlight %}
 
-修改samba的配置文件：
+修改samba的配置文件`/etc/samba/smb.conf`
 {% highlight bash %}
-# file: /etc/samba/smb.conf
-
 [global]
   workgroup = TIWB
   server string = Samba Server Version %v
@@ -42,15 +40,24 @@ $ chkconfig smb on
   load printers = no
   cups options = raw
 
+  # allow guest
+  map to guest = bad user
+  guest account = nobody
+
 [public]
   comment = Public Stuff
-  path = /data/samba
+  path = /data/samba/public
   public = yes
   writable = yes
-  printable = no
-  write list = root
 
 {% endhighlight %}
+
+然后建立public目录，并把所有者给nobody:
+{% highlight bash %}
+$ mkdir -p /data/samba/public
+$ chown nobody:nobody /data/samba/public
+{% endhighlight %}
+
 
 配置好以后就可以启动samba服务了：
 
@@ -62,3 +69,26 @@ $ service smb start
 {% highlight bash %}
 $ smbclient -L share -U%
 {% endhighlight %}
+
+如果在windows上要输入用户名， 那么输入nobody就可以了。
+
+
+## Samba集成LDAP验证
+
+首先， 要导入samba的schema文件，samba的文档里有一个转换好的ldif文件，所以直接拷贝过去：
+{% highlight bash %}
+$ scp /usr/share/doc/samba-3.6.9/LDAP/samba.ldif root@ldap.tiwb.net:~
+{% endhighlight %}
+
+然后到ldap的服务器上导入这个文件：
+{% highlight bash %}
+ldapadd -Q -Y EXTERNAL -H ldapi:/// -f cn\=samba.ldif
+{% endhighlight %}
+
+
+安装nss-pam-ldapd
+{% highlight bash %}
+$ yum install nss-pam-ldapd
+{% endhighlight %}
+
+
