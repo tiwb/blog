@@ -86,9 +86,30 @@ ldapadd -Q -Y EXTERNAL -H ldapi:/// -f cn\=samba.ldif
 {% endhighlight %}
 
 
+接下来，要配置服务器用ldap登录：
+
 安装nss-pam-ldapd
 {% highlight bash %}
 $ yum install nss-pam-ldapd
 {% endhighlight %}
 
+然后运行authconfig-tui，根据向导填写信息。
 
+在`/etc/samba/smb.conf`中加入ldap的配置：
+{% highlight ini %}
+[global]
+  passdb backend = ldapsam:"ldap://ldap.tiwb.net"
+  ldap ssl = no
+  ldap suffix = dc=tiwb,dc=net
+  ldap user suffix = ou=users
+  ldap group suffix = ou=groups
+  ldap machine suffix = ou=machines
+  ldap admin dn = cn=Manager,dc=tiwb,dc=net
+{% endhighlight %}
+
+重启服务，然后修改密码：
+
+{% highlight bash %}
+$ service smb restart
+$ smbpasswd lijia
+{% endhighlight %}
