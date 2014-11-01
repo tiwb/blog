@@ -1,4 +1,3 @@
-pygments: true
 permalink: /:categories/:year-:month-:day-:title/
 relative_permalinks: false
 markdown: rdiscount
