@@ -60,10 +60,16 @@ $ yum install libvirt-client
 </console>
 {% endhighlight %}
 
-然后还需要系统支持console连接，最简单的办法就是在grub.conf的启动参数里增加：
+然后还需要系统支持console连接，修改：/etc/default/grub
 {% highlight bash %}
-console=ttyS0,115200
+GRUB_CMDLINE_LINUX_DEFAULT="console=ttyS0,115200n8"
 {% endhighlight %}
+
+然后执行：
+{% highlight bash %}
+$ grub2-mkconfig -o /boot/grub2/grub.cfg
+{% endhighlight %}
+
 
 
 ### 使用差分镜像
